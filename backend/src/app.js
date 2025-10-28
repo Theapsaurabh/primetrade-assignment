@@ -3,9 +3,9 @@ const helmet = require('helmet');
 const morgan = require('morgan');
 require('dotenv').config();
 
-const connectDB = require('../config/database');
-const authRoutes = require('../routes/auth');
-const taskRoutes = require('../routes/tasks');
+const connectDB = require('./config/database');
+const authRoutes = require('./routes/auth');
+const taskRoutes = require('./routes/tasks');
 
 const app = express();
 

@@ -1,5 +1,5 @@
 'use client';
-
+export const dynamic = 'force-dynamic';
 import { useState, useCallback } from 'react';
 import { useAuth } from '@/src/contexts/AuthContext';
 import { useRouter, useSearchParams } from 'next/navigation';

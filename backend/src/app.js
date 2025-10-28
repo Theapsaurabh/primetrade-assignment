@@ -71,17 +71,22 @@ app.use((error, req, res, next) => {
   });
 });
 
-// Connect to database and export for serverless
+// Connect to database and start server
 const startServer = async () => {
   try {
     await connectDB();
-    console.log('Database connected successfully');
+    const PORT = process.env.PORT || 5000;
+    
+    app.listen(PORT, '0.0.0.0', () => {
+      console.log(`🚀 Server running on port ${PORT}`);
+      console.log(`📍 Environment: ${process.env.NODE_ENV || 'development'}`);
+    });
+    
   } catch (error) {
-    console.error('Database connection failed:', error);
+    console.error('Failed to start server:', error);
+    process.exit(1);
   }
 };
 
 startServer();
 
-// Export for Vercel serverless
-module.exports = app;

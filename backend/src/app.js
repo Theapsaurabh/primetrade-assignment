@@ -3,19 +3,19 @@ const helmet = require('helmet');
 const morgan = require('morgan');
 require('dotenv').config();
 
-const connectDB = require('./config/database');
-const authRoutes = require('./routes/auth');
-const taskRoutes = require('./routes/tasks');
-
-
-connectDB();
+const connectDB = require('../config/database');
+const authRoutes = require('../routes/auth');
+const taskRoutes = require('../routes/tasks');
 
 const app = express();
 
-
+// CORS Middleware
 app.use((req, res, next) => {
-  
-  const allowedOrigins = ['http://localhost:3000', 'http://127.0.0.1:3000'];
+  const allowedOrigins = [
+    'http://localhost:3000', 
+    'http://127.0.0.1:3000',
+    'https://primetrade-assignment-fi8b.vercel.app' 
+  ];
   const origin = req.headers.origin;
   
   if (allowedOrigins.includes(origin)) {
@@ -26,25 +26,20 @@ app.use((req, res, next) => {
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization, Accept, Origin, X-Requested-With');
   res.setHeader('Access-Control-Allow-Credentials', 'true');
   
-  console.log(`🌐 CORS Headers set for: ${origin}`);
-  
- 
   if (req.method === 'OPTIONS') {
-    console.log('🛬 Handling OPTIONS preflight request');
     return res.status(200).end();
   }
   
   next();
 });
 
-
 app.use(helmet());
 app.use(morgan('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-
-app.get('/', (req, res) => {
+// Health check endpoint
+app.get('/api', (req, res) => {
   res.json({
     success: true,
     message: 'Task Manager API is running with CORS!',
@@ -54,13 +49,11 @@ app.get('/', (req, res) => {
   });
 });
 
-
-
-
+// API routes
 app.use('/api/auth', authRoutes);
 app.use('/api/tasks', taskRoutes);
 
-
+// 404 handler
 app.use((req, res) => {
   res.status(404).json({
     success: false,
@@ -68,7 +61,7 @@ app.use((req, res) => {
   });
 });
 
-
+// Error handler
 app.use((error, req, res, next) => {
   console.error('Error:', error.message);
   res.status(500).json({
@@ -78,12 +71,17 @@ app.use((error, req, res, next) => {
   });
 });
 
-const PORT = process.env.PORT || 5000;
+// Connect to database and export for serverless
+const startServer = async () => {
+  try {
+    await connectDB();
+    console.log('Database connected successfully');
+  } catch (error) {
+    console.error('Database connection failed:', error);
+  }
+};
 
-app.listen(PORT, () => {
-  
-  console.log(` Server started successfully!`);
-  
-});
+startServer();
 
+// Export for Vercel serverless
 module.exports = app;

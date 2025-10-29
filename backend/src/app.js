@@ -42,7 +42,7 @@ app.use(express.urlencoded({ extended: true }));
 app.get('/api', (req, res) => {
   res.json({
     success: true,
-    message: 'Task Manager API is running with CORS!',
+    message: 'Task Manager API is running with without any error!',
     version: '1.0.0',
     timestamp: new Date().toISOString(),
     cors: 'Enabled'

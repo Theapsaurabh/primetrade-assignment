@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { User, Task, AuthResponse } from '@/src/types';
 
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:4000/api';
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL;
 
 // Enhanced error class with more context
 export class APIError extends Error {

@@ -14,7 +14,7 @@ app.use((req, res, next) => {
   const allowedOrigins = [
     'http://localhost:3000', 
     'http://127.0.0.1:3000',
-    'https://primetrade-assignment-fi8b.vercel.app' 
+    'https://primetrade-assignment-psi.vercel.app' 
   ];
   const origin = req.headers.origin;
   
@@ -52,6 +52,7 @@ app.get('/api', (req, res) => {
 // API routes
 app.use('/api/auth', authRoutes);
 app.use('/api/tasks', taskRoutes);
+
 
 // 404 handler
 app.use((req, res) => {
